@@ -8,7 +8,7 @@ Install Symfony and Doctrine.
 
 ```
 symfony serve
-npm run watch
+yarn encore dev-server --watch
 ```
 
 ## Compile CSS for production
