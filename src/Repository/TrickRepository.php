@@ -21,6 +21,35 @@ class TrickRepository extends ServiceEntityRepository
         parent::__construct($registry, Trick::class);
     }
 
+    public function findTricks($offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->select('t', 'm')
+            ->leftJoin('t.media', 'm')
+            ->where("m.type = 'image'")
+            ->orderBy('t.id', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults(15);
+
+        $query = $qb->getQuery();
+
+        if ($offset > 0) {
+            return $query->getArrayResult();
+        } else {
+            return $query->execute();
+        }
+
+
+    }
+
+    public function numberOfTricks(): int
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->select('count(t.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return trick[] Returns an array of trick objects
 //     */

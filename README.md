@@ -8,13 +8,13 @@ Install Symfony and Doctrine.
 
 ```
 symfony serve
-yarn encore dev-server --watch
+yarn encore dev --watch
 ```
 
 ## Compile CSS for production
 
 ```
-yarn encore dev-server
+yarn encore production
 ```
 
 ## Configure the mailer
