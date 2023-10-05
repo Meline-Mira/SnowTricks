@@ -38,8 +38,6 @@ class TrickRepository extends ServiceEntityRepository
         } else {
             return $query->execute();
         }
-
-
     }
 
     public function numberOfTricks(): int
@@ -48,6 +46,19 @@ class TrickRepository extends ServiceEntityRepository
             ->select('count(t.id)');
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function findOneTrick($slug):array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->select('t', 'm')
+            ->leftJoin('t.media', 'm')
+            ->where('t.slug = :slug')
+            ->setParameter('slug', $slug);
+
+        $query = $qb->getQuery();
+
+        return $query->getArrayResult();
     }
 
 //    /**
