@@ -32,6 +32,9 @@ class Media
     #[ORM\Column(length: 10)]
     private ?string $type = null;
 
+    #[ORM\OneToOne(mappedBy: 'chosenImage', cascade: ['persist', 'remove'])]
+    private ?Trick $chosenImageForTrick = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +88,28 @@ class Media
         }
 
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getChosenImageForTrick(): ?Trick
+    {
+        return $this->chosenImageForTrick;
+    }
+
+    public function setChosenImageForTrick(?Trick $chosenImageForTrick): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($chosenImageForTrick === null && $this->chosenImageForTrick !== null) {
+            $this->chosenImageForTrick->setChosenImage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($chosenImageForTrick !== null && $chosenImageForTrick->getChosenImage() !== $this) {
+            $chosenImageForTrick->setChosenImage($this);
+        }
+
+        $this->chosenImageForTrick = $chosenImageForTrick;
 
         return $this;
     }

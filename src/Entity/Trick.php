@@ -43,6 +43,9 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
+    #[ORM\OneToOne(inversedBy: 'chosenImageForTrick', cascade: ['persist', 'remove'])]
+    private ?Media $chosenImage = null;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -182,6 +185,18 @@ class Trick
                 $message->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChosenImage(): ?Media
+    {
+        return $this->chosenImage;
+    }
+
+    public function setChosenImage(?Media $chosenImage): static
+    {
+        $this->chosenImage = $chosenImage;
 
         return $this;
     }

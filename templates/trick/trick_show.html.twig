@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/js/lightbox/css/lightbox.min.css" />
+{% endblock %}
+
+{% block body %}
+    <div class="relative max-w-5xl mx-3 lg:mx-auto my-3 md:my-8 border border-yellow-700">
+        <div class="absolute top-6 right-6 flex bg-stone-100 border border-yellow-700 px-2">
+            <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14.363 5.652l1.48-1.48a2 2 0 012.829 0l1.414 1.414a2 2 0 010 2.828l-1.48 1.48m-4.243-4.242l-9.616 9.615a2 2 0 00-.578 1.238l-.242 2.74a1 1 0 001.084 1.085l2.74-.242a2 2 0 001.24-.578l9.615-9.616m-4.243-4.242l4.243 4.242" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="basis-1/6"></path></svg>
+            <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3.04 4.294a.496.496 0 01.191-.479C3.927 3.32 6.314 2 12 2s8.073 1.32 8.769 1.815a.496.496 0 01.192.479l-1.7 12.744a4 4 0 01-1.98 2.944l-.32.183a10 10 0 01-9.922 0l-.32-.183a4 4 0 01-1.98-2.944l-1.7-12.744zM3 5c2.571 2.667 15.429 2.667 18 0" stroke="#000000" stroke-width="1.5" class="basis-1/6"></path></svg>
+        </div>
+
+        {% if trick.media == null %}
+            <img class="mx-auto h-96 w-full object-cover" src="/images/no-photo.jpg" alt="snowboarder assis">
+        {% else %}
+            {% if trick.chosenImage == null %}
+                <img class="mx-auto h-96 w-full object-cover" src="{{ trick.media[0].path }}" alt="{{ trick.media[0].description }}">
+            {% else %}
+                <img class="mx-auto h-96 w-full object-cover" src="{{ trick.chosenImage.path }}" alt="{{ trick.chosenImage.description }}">
+            {% endif %}
+        {% endif %}
+        <h1 class="absolute top-6 mx-4 md:top-20 md:left-24 text-7xl md:text-8xl md:max-w-3xl text-cyan-800 font-serif backdrop-blur-sm bg-white/50">{{ trick.name }}</h1>
+
+        <div onclick="displayMedias()" id="see-medias" class="md:hidden flex cursor-pointer w-64 py-2 mt-6 mx-auto bg-cyan-800 hover:bg-cyan-700 justify-center shadow-md shadow-cyan-800/50 text-stone-100">
+            Voir les photos et vidéos
+        </div>
+
+        <div class="hidden md:block" id="medias">
+            <div class="flex flex-nowrap my-3 mx-4 overflow-x-auto">
+                {% for media in trick.media %}
+                    <div class="w-5/6 md:w-1/3 lg:w-1/6 h-32 flex-shrink-0 mr-4">
+                        {% if media.type == 'image' %}
+                            <a href="{{ media.path }}" data-lightbox="trick">
+                                <img src="{{ media.path }}" alt="{{ media.description }}" class="w-full h-full object-cover">
+                            </a>
+                        {% else %}
+                            <iframe src="{{ media.path }}" title="{{ media.description }}" class="w-full h-full object-cover" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mx-12 my-6">{{ trick.description }}</div>
+
+        <div class="flex justify-evenly mb-6 mx-12">
+            <p>Création : {{ trick.creationDate|date('d/m/Y h:m') }}</p>
+            {% if trick.updatingDate != null %}
+                <p>Modification : {{ trick.updatingDate|date('d/m/Y h:m') }}</p>
+            {% endif %}
+            <p>Groupe : {{ trick.groupTrick.name }}</p>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/js/lightbox/js/lightbox-plus-jquery.min.js"></script>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function displayMedias() {
+            fetch(`/trick/{{ trick.slug }}/medias`)
+                .then(response => response.json())
+                .then(response => {
+                    const trickMedias = document.getElementById('medias');
+                    trickMedias.classList.remove('hidden');
+
+                    const seeMedias = document.getElementById('see-medias')
+                    seeMedias.remove()
+                })
+                .catch(error => alert("Erreur : " + error));
+        }
+    </script>
+{% endblock %}

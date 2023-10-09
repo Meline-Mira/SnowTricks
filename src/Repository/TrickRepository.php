@@ -25,8 +25,7 @@ class TrickRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('t')
             ->select('t', 'm')
-            ->leftJoin('t.media', 'm')
-            ->where("m.type = 'image'")
+            ->leftJoin('t.media', 'm', 'WITH', "m.type = 'image'")
             ->orderBy('t.id', 'ASC')
             ->setFirstResult($offset)
             ->setMaxResults(15);
@@ -48,17 +47,18 @@ class TrickRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function findOneTrick($slug):array
+    public function findOneTrick($slug): Trick
     {
         $qb = $this->createQueryBuilder('t')
-            ->select('t', 'm')
+            ->select('t', 'g', 'm')
+            ->leftJoin('t.groupTrick', 'g')
             ->leftJoin('t.media', 'm')
             ->where('t.slug = :slug')
             ->setParameter('slug', $slug);
 
         $query = $qb->getQuery();
 
-        return $query->getArrayResult();
+        return $query->getSingleResult();
     }
 
 //    /**

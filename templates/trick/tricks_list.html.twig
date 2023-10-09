@@ -2,13 +2,13 @@
 
 {% block body %}
     <div class="relative">
-        <div class="absolute bottom-4 right-6">
+        <div class="absolute bottom-20 md:bottom-4 right-6">
             <a href="#tricks">
                 <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M12 3v18m0 0l8.5-8.5M12 21l-8.5-8.5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </a>
         </div>
 
-        <img src="https://images.unsplash.com/photo-1418662589339-364ad47f98a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80" alt="Snowboarder descendant une piste enneigée." class="mx-auto h-screen md:h-[calc(100vh-64px)] md:w-full object-cover object-right-bottom">
+        <img src="/images/accueil.jpg" alt="Snowboarder descendant une piste enneigée." class="mx-auto h-screen md:h-[calc(100vh-64px)] md:w-full object-cover object-right-bottom">
         <h1 class="absolute top-6 mx-4 md:top-40 md:left-24 text-7xl md:text-8xl md:max-w-3xl text-cyan-800 font-serif">La montagne est votre terrain de jeu. Jouez grand.</h1>
     </div>
 
@@ -16,7 +16,11 @@
         <div id="tricks-list" class="mx-auto px-8 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
             {% for trick in tricks %}
                 <div class="flex flex-col border border-cyan-800">
-                    <img class="min-w-full h-40 object-cover" src="{{ trick.media[0].path }}" alt="{{ trick.media[0].description }}">
+                    {% if not trick.media.empty %}
+                        <img class="min-w-full h-40 object-cover" src="{{ trick.media[0].path }}" alt="{{ trick.media[0].description }}">
+                    {% else %}
+                        <img class="min-w-full h-40 object-cover" src="/images/no-photo.jpg" alt="snowboarder assis">
+                    {% endif %}
                     <div class="flex justify-around my-2">
                         <a href="trick/{{ trick.slug }}" class="text-base font-semibold text-gray-900 basis-2/3">{{ trick.name }}</a>
                         <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14.363 5.652l1.48-1.48a2 2 0 012.829 0l1.414 1.414a2 2 0 010 2.828l-1.48 1.48m-4.243-4.242l-9.616 9.615a2 2 0 00-.578 1.238l-.242 2.74a1 1 0 001.084 1.085l2.74-.242a2 2 0 001.24-.578l9.615-9.616m-4.243-4.242l4.243 4.242" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="basis-1/6"></path></svg>
@@ -49,9 +53,15 @@
                 .then(response => {
                     const trickList = document.getElementById('tricks-list');
                     for (trick of response.tricks) {
+                        let image = '<img class="min-w-full h-40 object-cover" src="/images/no-photo.jpg" alt="snowboarder assis">';
+
+                        if (trick.media.length > 0) {
+                            image = `<img class="min-w-full h-40 object-cover" src="${trick.media[0].path}" alt="${trick.media[0].description}">`;
+                        }
+
                         trickList.innerHTML +=
                             `<div class="flex flex-col border border-cyan-800">
-                                <img class="min-w-full h-40 object-cover" src="${trick.media[0].path}" alt="${trick.media[0].description}">
+                                ${image}
                                 <div class="flex justify-around my-2">
                                     <a href="${trick.slug}" class="text-base font-semibold text-gray-900 basis-2/3">${trick.name}</a>
                                     <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14.363 5.652l1.48-1.48a2 2 0 012.829 0l1.414 1.414a2 2 0 010 2.828l-1.48 1.48m-4.243-4.242l-9.616 9.615a2 2 0 00-.578 1.238l-.242 2.74a1 1 0 001.084 1.085l2.74-.242a2 2 0 001.24-.578l9.615-9.616m-4.243-4.242l4.243 4.242" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="basis-1/6"></path></svg>

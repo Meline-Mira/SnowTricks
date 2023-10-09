@@ -114,7 +114,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Snowboarder en train de sauter et tourner en même temps',
-            'path' => 'https://www.youtube.com/watch?v=AepLCXn30Ww',
+            'path' => 'https://www.youtube.com/embed/AepLCXn30Ww',
             'trick' => $switchRodeoCinqTailGrab,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -126,7 +126,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Tuto expliquant comment faire un 270',
-            'path' => 'https://www.youtube.com/watch?v=fweKH6XAduY',
+            'path' => 'https://www.youtube.com/embed/fweKH6XAduY',
             'trick' => $switch270ToRail,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -138,7 +138,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Tuto expliqaund comment faire un backside air',
-            'path' => 'https://www.youtube.com/watch?v=_CN_yyEn78M',
+            'path' => 'https://www.youtube.com/embed/_CN_yyEn78M',
             'trick' => $backsideAir,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -150,7 +150,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Snowboarder en train de faire la figure',
-            'path' => 'https://www.youtube.com/watch?v=Opg5g4zsiGY',
+            'path' => 'https://www.youtube.com/embed/Opg5g4zsiGY',
             'trick' => $mistyTroisSixMute,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -162,7 +162,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo de la figure',
-            'path' => 'https://www.youtube.com/watch?v=hm68sxK0We4',
+            'path' => 'https://www.youtube.com/embed/hm68sxK0We4',
             'trick' => $corkSeptDeuxIndy,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -174,7 +174,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo sur comment améliorer sa figure',
-            'path' => 'https://www.youtube.com/watch?v=f0PyFsOcnIw',
+            'path' => 'https://www.youtube.com/embed/f0PyFsOcnIw',
             'trick' => $switchMistyCinqQuatreStalefish,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -186,7 +186,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo sur comment faire la figure',
-            'path' => 'https://www.youtube.com/watch?v=KqSi94FT7EE',
+            'path' => 'https://www.youtube.com/embed/KqSi94FT7EE',
             'trick' => $quatreCentCinquanteToNoseSlide,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -198,7 +198,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo sur comment faire la figure',
-            'path' => 'https://www.youtube.com/watch?v=HRNXjMBakwM',
+            'path' => 'https://www.youtube.com/embed/HRNXjMBakwM',
             'trick' => $tailSlideTo270,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -210,7 +210,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo sur comment faire la figure',
-            'path' => 'https://www.youtube.com/watch?v=oAK9mK7wWvw',
+            'path' => 'https://www.youtube.com/embed/oAK9mK7wWvw',
             'trick' => $switchNoseSlideTo630,
             'type' => Media::TYPE_VIDEO,
         ]);
@@ -222,7 +222,7 @@ class AppFixtures extends Fixture
         ]);
         MediaFactory::createOne([
             'description' => 'Vidéo sur d\'un snowboarder en train de faire la figure',
-            'path' => 'https://www.youtube.com/watch?v=n6POX-LeGnE',
+            'path' => 'https://www.youtube.com/embed/n6POX-LeGnE',
             'trick' => $rodeoCinqQuatreJapanAir,
             'type' => Media::TYPE_VIDEO,
         ]);
