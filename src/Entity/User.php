@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email', 'username', 'token')]
 class User
 {
     #[ORM\Id]
@@ -31,7 +29,7 @@ class User
     private ?string $picture = null;
 
     #[ORM\Column]
-    private ?bool $valid = null;
+    private ?bool $valid = false;
 
     #[ORM\Column(length: 60, nullable: true, unique: true)]
     private ?string $token = null;
