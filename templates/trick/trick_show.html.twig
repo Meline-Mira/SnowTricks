@@ -60,16 +60,11 @@
 {% block javascripts %}
     <script>
         function displayMedias() {
-            fetch(`/trick/{{ trick.slug }}/medias`)
-                .then(response => response.json())
-                .then(response => {
-                    const trickMedias = document.getElementById('medias');
-                    trickMedias.classList.remove('hidden');
+            const trickMedias = document.getElementById('medias');
+            trickMedias.classList.remove('hidden');
 
-                    const seeMedias = document.getElementById('see-medias')
-                    seeMedias.remove()
-                })
-                .catch(error => alert("Erreur : " + error));
+            const seeMedias = document.getElementById('see-medias')
+            seeMedias.remove()
         }
     </script>
 {% endblock %}

@@ -19,13 +19,4 @@ class TrickShowController extends AbstractController
             'trick' => $trick,
         ]);
     }
-
-    #[Route('/trick/{slug}/medias', name: 'trick_show_medias')]
-    public function trickMedias(TrickRepository $repository, string $slug): JsonResponse
-    {
-        $trick = $repository->findOneTrick($slug);
-        return new JsonResponse([
-            'trick' => $trick,
-        ]);
-    }
 }
