@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="max-w-5xl mx-3 lg:mx-auto my-3 md:my-8 border border-yellow-700">
+        <h1 class="flex justify-center my-8 text-5xl text-cyan-800">Se connecter</h1>
+
+        <div class="flex flex-col">
+            {% if error %}
+                <div class="text-red-700 mx-6">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form action="{{ path('sign_in') }}" method="post" class="flex flex-col m-6">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}">
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="_password">
+
+                <input type="hidden" name="tricks_list" value="/account">
+
+                <button type="submit" class="cursor-pointer w-64 py-2 mt-6 mx-auto bg-cyan-800 hover:bg-cyan-700 justify-center shadow-md shadow-cyan-800/50 text-stone-100">login</button>
+            </form>
+        </div>
+
+        <div class="text-center mb-4">
+            Si vous n'avez pas de compte, cliquez <a href="#" class="text-cyan-800 hover:text-cyan-600 hover:underline hover:decoration-cyan-600">ici</a>.
+        </div>
+
+        <div class="text-center mb-4">
+            Si vous avez oublié votre mot de passe, cliquez <a href="#" class="text-cyan-800 hover:text-cyan-600 hover:underline hover:decoration-cyan-600">ici</a>.
+        </div>
+    </div>
+{% endblock %}
