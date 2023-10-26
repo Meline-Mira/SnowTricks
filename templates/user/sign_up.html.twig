@@ -3,8 +3,13 @@
 {% block body %}
     <div class="max-w-5xl mx-3 lg:mx-auto my-3 md:my-8 border border-yellow-700">
         <h1 class="flex justify-center my-8 text-5xl text-cyan-800">Créer un compte</h1>
+
         <div class="m-6">
             {{ form(form) }}
+        </div>
+
+        <div class="text-center mb-4">
+            Si vous avez déjà un compte, cliquez <a href="#" class="text-cyan-800 hover:text-cyan-600 hover:underline hover:decoration-cyan-600">ici</a>.
         </div>
     </div>
 {% endblock %}

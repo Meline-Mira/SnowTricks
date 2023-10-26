@@ -23,20 +23,25 @@ class TrickRepository extends ServiceEntityRepository
 
     public function findTricks($offset = 0): array
     {
-        $qb = $this->createQueryBuilder('t')
-            ->select('t', 'm')
-            ->leftJoin('t.media', 'm', 'WITH', "m.type = 'image'")
+        $tricksQuery = $this->createQueryBuilder('t')
+            ->select('t.id')
             ->orderBy('t.id', 'ASC')
             ->setFirstResult($offset)
-            ->setMaxResults(15);
+            ->setMaxResults(15)
+            ->getQuery();
 
-        $query = $qb->getQuery();
+        $trickIds = $tricksQuery->getSingleColumnResult();
 
-        if ($offset > 0) {
-            return $query->getArrayResult();
-        } else {
-            return $query->execute();
-        }
+        $tricksWithJoinsQuery = $this->createQueryBuilder('t')
+            ->select('t', 'c', 'm')
+            ->leftJoin('t.chosenImage', 'c')
+            ->leftJoin('t.media', 'm', 'WITH', "m.type = 'image'")
+            ->where('t.id IN (:trickIds)')
+            ->setParameter('trickIds', $trickIds)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery();
+
+        return $tricksWithJoinsQuery->getArrayResult();
     }
 
     public function numberOfTricks(): int
