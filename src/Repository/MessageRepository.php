@@ -21,6 +21,31 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function findMessagesByTrick(int $trick, $offset = 0): array
+    {
+        $messagesQuery = $this->createQueryBuilder('m')
+            ->select('m', 'u')
+            ->andWhere('m.trick = :trick')
+            ->setParameter('trick', $trick)
+            ->leftJoin('m.user', 'u')
+            ->orderBy('m.creationDate', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults(10)
+            ->getQuery();
+
+        return $messagesQuery->getArrayResult();
+    }
+
+    public function numberOfMessages(int $trick): int
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->andWhere('m.trick = :trick')
+            ->setParameter('trick', $trick);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Message[] Returns an array of Message objects
 //     */
