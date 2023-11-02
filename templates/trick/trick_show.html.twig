@@ -53,6 +53,14 @@
             <p>Groupe : {{ trick.groupTrick.name }}</p>
         </div>
 
+        {% if is_granted('ROLE_USER') %}
+            <div class="border border-cyan-800 w-5/6 flex mx-auto"></div>
+
+            <div class="my-6 w-5/6 mx-auto" id="leave-message">
+                {{ form(form) }}
+            </div>
+        {% endif %}
+
         <div class="border border-cyan-800 w-5/6 flex mx-auto"></div>
 
         <div id="messages-list" class="m-6">
@@ -64,7 +72,7 @@
                         <img src="https://api.dicebear.com/7.x/initials/svg?seed={{ message.user.username }}&radius=50&size=64" alt="avatar avec l'initiale de l'auteur">
                     {% endif %}
 
-                    <div class="border border-cyan-800 p-2 ms-4 bg-cyan-50 w-2/3">
+                    <div class="border border-cyan-800 p-2 ms-4 bg-sky-50 w-2/3">
                         <p class="font-semibold">{{ message.user.username }}</p>
 
                         <p>{{ message.content }}</p>
@@ -108,14 +116,14 @@
 
                         if (message.picture != null) {
                             image = `<img src="${message.picture}" alt="photo de l'auteur du message">`;
-                        }
+                        %}
 
                         let creationDate = new Date(message.creationDate.date);
 
                         messagesList.innerHTML +=
                             `<div class="flex justify-center my-2">
                                 ${image}
-                                <div class="border border-cyan-800 p-2 ms-4 bg-cyan-50 w-2/3">
+                                <div class="border border-cyan-800 p-2 ms-4 bg-sky-50 w-2/3">
                                     <p class="font-semibold">${message.user.username}</p>
 
                                     <p>${message.content }</p>
