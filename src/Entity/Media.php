@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
@@ -20,9 +22,12 @@ class Media
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Url]
+    #[NotBlank]
     private ?string $path = null;
 
     #[ORM\Column(length: 100)]
+    #[NotBlank]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'media')]

@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-#[UniqueEntity('slug', 'name')]
+#[UniqueEntity('name')]
 class Trick
 {
     #[ORM\Id]
@@ -22,13 +24,16 @@ class Trick
     private ?string $slug = null;
 
     #[ORM\Column(length: 60, unique: true)]
+    #[NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[NotBlank]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, orphanRemoval: true)]
-    private Collection $media;
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Valid]
+    private Collection $medias;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
@@ -48,7 +53,7 @@ class Trick
 
     public function __construct()
     {
-        $this->media = new ArrayCollection();
+        $this->medias = new ArrayCollection();
         $this->messages = new ArrayCollection();
     }
 
@@ -96,27 +101,27 @@ class Trick
     /**
      * @return Collection<int, Media>
      */
-    public function getMedia(): Collection
+    public function getMedias(): Collection
     {
-        return $this->media;
+        return $this->medias;
     }
 
-    public function addMedium(Media $medium): static
+    public function addMedia(Media $media): static
     {
-        if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
-            $medium->setTrick($this);
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->setTrick($this);
         }
 
         return $this;
     }
 
-    public function removeMedium(Media $medium): static
+    public function removeMedia(Media $media): static
     {
-        if ($this->media->removeElement($medium)) {
+        if ($this->medias->removeElement($media)) {
             // set the owning side to null (unless already changed)
-            if ($medium->getTrick() === $this) {
-                $medium->setTrick(null);
+            if ($media->getTrick() === $this) {
+                $media->setTrick(null);
             }
         }
 

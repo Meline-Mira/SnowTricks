@@ -35,7 +35,7 @@ class TrickRepository extends ServiceEntityRepository
         $tricksWithJoinsQuery = $this->createQueryBuilder('t')
             ->select('t', 'c', 'm')
             ->leftJoin('t.chosenImage', 'c')
-            ->leftJoin('t.media', 'm', 'WITH', "m.type = 'image'")
+            ->leftJoin('t.medias', 'm', 'WITH', "m.type = 'image'")
             ->where('t.id IN (:trickIds)')
             ->setParameter('trickIds', $trickIds)
             ->orderBy('t.id', 'ASC')
@@ -57,13 +57,23 @@ class TrickRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('t')
             ->select('t', 'g', 'm')
             ->leftJoin('t.groupTrick', 'g')
-            ->leftJoin('t.media', 'm')
+            ->leftJoin('t.medias', 'm')
             ->where('t.slug = :slug')
             ->setParameter('slug', $slug);
 
         $query = $qb->getQuery();
 
         return $query->getSingleResult();
+    }
+
+    public function findOneByName($name): ?Trick
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.name = :val')
+            ->setParameter('val', $name)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 
 //    /**

@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="max-w-5xl mx-3 lg:mx-auto my-3 md:my-8 border border-yellow-700">
+        <h1 class="flex justify-center my-8 text-5xl text-cyan-800">Créer une nouvelle figure</h1>
+
+        <div class="m-6">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+
+            <h3>Images et vidéos</h3>
+            <ul class="medias"
+                data-index="{{ form.medias|length > 0 ? form.medias|last.vars.name + 1 : 0 }}"
+                data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+                {% if form.medias|length > 0 %}{{ form_row(form.medias) }}{% endif %}
+
+                <button type="button" class="add_item_link cursor-pointer p-2 mb-6 bg-yellow-700 hover:bg-yellow-600 justify-center shadow-md shadow-yellow-700/50 text-stone-100" data-collection-holder-class="medias">Ajouter une image ou une vidéo</button>
+            </ul>
+
+            {{ form_row(form.groupTrick) }}
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+
+    <script>
+
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+
+            addMediaFormDeleteLink(item);
+        };
+
+        const addMediaFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerText = 'Supprimer ce media';
+            removeFormButton.className = 'text-red-800  p-1 my-2';
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+
+        document
+            .querySelectorAll('ul.medias>div')
+            .forEach((media) => {
+                addMediaFormDeleteLink(media)
+            });
+    </script>
+{% endblock %}
