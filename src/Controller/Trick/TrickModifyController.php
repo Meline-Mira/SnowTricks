@@ -12,38 +12,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class TrickCreateController extends AbstractController
+class TrickModifyController extends AbstractController
 {
-    #[Route('/trick/create', name: 'create_trick')]
-    public function trickCreate(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    #[Route('/trick/modify/{slug}', name: 'modify_trick')]
+    public function trickModify(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager, Trick $trick): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $form = $this->createForm(TrickType::class);
+        $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Trick $trick */
             $trick = $form->getData();
 
-            $today = new DateTimeImmutable();
+            $updatingDate = new DateTimeImmutable();
             $trick->setSlug(strtolower($slugger->slug($trick->getName())));
-            $trick->setCreationDate($today);
+            $trick->setUpdatingDate($updatingDate);
 
-            $entityManager->persist($trick);
             $entityManager->flush();
 
             $this->addFlash(
                 'notice',
-                'Votre figure a bien été enregistrée.'
+                'Votre figure a bien été modifiée.'
             );
 
-            return $this->redirectToRoute('tricks_list');
+            return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('trick/create_or_modify_trick.html.twig', [
             'form' => $form,
-            'page_type' => 'create',
+            'page_type' => 'modify',
         ]);
     }
 }

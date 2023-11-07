@@ -18,8 +18,6 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom de la figure'])
-            ->add('description', TextareaType::class, ['label' => 'Description de la figure'])
             ->add('medias', CollectionType::class, [
                 'entry_type' => MediaType::class,
                 'entry_options' => [
@@ -30,6 +28,8 @@ class TrickType extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
+            ->add('name', TextType::class, ['label' => 'Nom de la figure'])
+            ->add('description', TextareaType::class, ['label' => 'Description de la figure'])
             ->add('groupTrick', EntityType::class, [
                 'class' => Group::class,
                 'choice_label' => 'name',

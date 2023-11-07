@@ -7,3 +7,15 @@
 {% block button_attributes %}
     class="cursor-pointer w-64 py-2 mt-6 mx-auto bg-cyan-800 hover:bg-cyan-700 justify-center shadow-md shadow-cyan-800/50 text-stone-100"
 {% endblock %}
+
+{% block media_widget %}
+    {% if data %}
+        {% if data.type == 'image' %}
+            <img src="{{ data.path }}" alt="{{ data.description }}" class="w-64 h-32 object-cover mb-2" />
+        {% else %}
+            <iframe src="{{ data.path }}" title="{{ data.description }}" class="w-64 h-32 object-cover mb-2"></iframe>
+        {% endif %}
+    {% endif %}
+
+    {{ block('form_widget') }}
+{% endblock %}
