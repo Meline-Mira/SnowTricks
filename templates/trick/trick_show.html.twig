@@ -18,7 +18,7 @@
             <a href="{{ path('chosen_image', {slug: trick.slug}) }}">
                 <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14.363 5.652l1.48-1.48a2 2 0 012.829 0l1.414 1.414a2 2 0 010 2.828l-1.48 1.48m-4.243-4.242l-9.616 9.615a2 2 0 00-.578 1.238l-.242 2.74a1 1 0 001.084 1.085l2.74-.242a2 2 0 001.24-.578l9.615-9.616m-4.243-4.242l4.243 4.242" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="basis-1/6"></path></svg>
             </a>
-            <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3.04 4.294a.496.496 0 01.191-.479C3.927 3.32 6.314 2 12 2s8.073 1.32 8.769 1.815a.496.496 0 01.192.479l-1.7 12.744a4 4 0 01-1.98 2.944l-.32.183a10 10 0 01-9.922 0l-.32-.183a4 4 0 01-1.98-2.944l-1.7-12.744zM3 5c2.571 2.667 15.429 2.667 18 0" stroke="#000000" stroke-width="1.5" class="basis-1/6"></path></svg>
+            <button onclick="onDeleteChosenImage('{{ trick.slug|escape('js') }}')"><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3.04 4.294a.496.496 0 01.191-.479C3.927 3.32 6.314 2 12 2s8.073 1.32 8.769 1.815a.496.496 0 01.192.479l-1.7 12.744a4 4 0 01-1.98 2.944l-.32.183a10 10 0 01-9.922 0l-.32-.183a4 4 0 01-1.98-2.944l-1.7-12.744zM3 5c2.571 2.667 15.429 2.667 18 0" stroke="#000000" stroke-width="1.5" class="basis-1/6"></path></svg></button>
         </div>
 
         {% if trick.medias|length == 0 %}
@@ -36,7 +36,7 @@
             <a href="{{ path('modify_trick', {slug: trick.slug}) }}">
                 <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M14.363 5.652l1.48-1.48a2 2 0 012.829 0l1.414 1.414a2 2 0 010 2.828l-1.48 1.48m-4.243-4.242l-9.616 9.615a2 2 0 00-.578 1.238l-.242 2.74a1 1 0 001.084 1.085l2.74-.242a2 2 0 001.24-.578l9.615-9.616m-4.243-4.242l4.243 4.242" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="basis-1/6"></path></svg>
             </a>
-            <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3.04 4.294a.496.496 0 01.191-.479C3.927 3.32 6.314 2 12 2s8.073 1.32 8.769 1.815a.496.496 0 01.192.479l-1.7 12.744a4 4 0 01-1.98 2.944l-.32.183a10 10 0 01-9.922 0l-.32-.183a4 4 0 01-1.98-2.944l-1.7-12.744zM3 5c2.571 2.667 15.429 2.667 18 0" stroke="#000000" stroke-width="1.5" class="basis-1/6"></path></svg>
+            <button onclick="onDeleteTrick('{{ trick.slug|escape('js') }}')"><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3.04 4.294a.496.496 0 01.191-.479C3.927 3.32 6.314 2 12 2s8.073 1.32 8.769 1.815a.496.496 0 01.192.479l-1.7 12.744a4 4 0 01-1.98 2.944l-.32.183a10 10 0 01-9.922 0l-.32-.183a4 4 0 01-1.98-2.944l-1.7-12.744zM3 5c2.571 2.667 15.429 2.667 18 0" stroke="#000000" stroke-width="1.5" class="basis-1/6"></path></svg></button>
         </div>
 
         <div onclick="displayMedias()" id="see-medias" class="md:hidden flex cursor-pointer w-64 py-2 mt-6 mx-auto bg-cyan-800 hover:bg-cyan-700 justify-center shadow-md shadow-cyan-800/50 text-stone-100">
@@ -163,5 +163,17 @@
         setTimeout(function() {
             document.getElementById('flash').classList.add('hidden')
         }, 10000)
+
+        function onDeleteTrick(slug) {
+            if (window.confirm("Voulez-vous supprimer cette figure ?")) {
+                window.location.href = (`/trick/delete/${slug}`);
+            }
+        }
+
+        function onDeleteChosenImage(slug) {
+            if (window.confirm("Voulez-vous supprimer cette image en tant qu'image à la une ?")) {
+                window.location.href = (`/trick/delete-chosen-image/${slug}`);
+            }
+        }
     </script>
 {% endblock %}

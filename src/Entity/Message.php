@@ -21,7 +21,7 @@ class Message
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Trick $trick = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]

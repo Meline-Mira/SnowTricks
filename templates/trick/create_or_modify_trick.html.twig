@@ -38,9 +38,11 @@
             {{ form_row(form.groupTrick) }}
             {{ form_end(form) }}
 
-            <div class="cursor-pointer p-2 my-6 bg-red-800 hover:bg-red-700 text-center shadow-md shadow-red-800/50 text-stone-100 w-64">
-                <a href="#">Supprimer la figure</a>
-            </div>
+            {% if page_type == 'modify' %}
+                <div class="cursor-pointer p-2 my-6 bg-red-800 hover:bg-red-700 text-center shadow-md shadow-red-800/50 text-stone-100 w-64">
+                    <button onclick="onDeleteTrick('{{ slug|escape('js') }}')">Supprimer la figure</button>
+                </div>
+            {% endif %}
         </div>
 
     </div>
@@ -99,6 +101,12 @@
 
             const seeMedias = document.getElementById('see-medias')
             seeMedias.remove()
+        }
+
+        function onDeleteTrick(slug) {
+            if (window.confirm("Voulez-vous supprimer cette figure ?")) {
+                window.location.href = (`/trick/delete/${slug}`);
+            }
         }
     </script>
 {% endblock %}

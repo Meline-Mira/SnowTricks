@@ -43,6 +43,7 @@ class TrickModifyController extends AbstractController
         return $this->render('trick/create_or_modify_trick.html.twig', [
             'form' => $form,
             'page_type' => 'modify',
+            'slug' => $trick->getSlug(),
         ]);
     }
 }
