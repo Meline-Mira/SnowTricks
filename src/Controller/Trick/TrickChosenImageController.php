@@ -28,6 +28,8 @@ class TrickChosenImageController extends AbstractController
     #[Route('/trick/{slug}/chosen-image/{id}', name: 'chosen_image_id')]
     public function selectedImage(string $slug, int $id, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $trick = $entityManager->getRepository(Trick::class)->findOneBySlug($slug);
         $media = $entityManager->getRepository(Media::class)->find($id);
         $trick->setChosenImage($media);
