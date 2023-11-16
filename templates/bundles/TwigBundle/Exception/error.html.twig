@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="max-w-5xl mx-3 lg:mx-auto my-3 md:my-8 p-4 border border-yellow-700 text-center">
+        <p>Oups ! L'application a bugué.</p>
+        <p>{{ status_code }} {{ status_text }}</p>
+        <p>Voulez-vous revenir à <a href="{{ path('tricks_list') }}" class="underline hover:no-underline text-cyan-800">l'accueil</a> ?</p>
+    </div>
+{% endblock %}

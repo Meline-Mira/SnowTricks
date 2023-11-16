@@ -22,7 +22,7 @@ class UserValidationController extends AbstractController
 
             return $this->render('user/user_validation.html.twig');
         } else {
-            return $this->render('errors/400.html.twig');
+            return $this->render('errors/mail_or_token.html.twig');
         }
     }
 }
