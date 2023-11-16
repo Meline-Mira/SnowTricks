@@ -18,6 +18,8 @@
 
                 <input type="hidden" name="tricks_list" value="/account">
 
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
                 <button type="submit" class="cursor-pointer w-64 py-2 mt-6 mx-auto bg-cyan-800 hover:bg-cyan-700 justify-center shadow-md shadow-cyan-800/50 text-stone-100">Se connecter</button>
             </form>
         </div>
