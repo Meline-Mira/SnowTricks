@@ -1,10 +1,14 @@
-# Emeline Numérique Blog
+# SnowTricks
 
-## Preparing the project for its first launch
+## Installing dependencies
 
-Install Symfony and Doctrine.
+```
+composer install
+```
 
 ## Launch the project locally
+
+In two different terminals, run:
 
 ```
 symfony serve
@@ -19,10 +23,14 @@ yarn encore production
 
 ## Configure the mailer
 
-Install Symfony Mailer. Copy the `.env` file to `.env.local` then fill the MAILER_DSN variable with a compatible DSN 
-with Symfony Mailer.
+Create a `.env.local` file containing a MAILER_DSN according to Symfony Mailer's specifications.
 
-## Configure the database connexion
+## Configure the database connection
 
-Importe the database.sql file. The database engine I choose is MySQL (MariaDB). In `.env.local` fill in the variable 
-values.
+In `.env.local`, fill the DATABASE_URL variable depending on the database engine you want to use. In your terminal, type :
+
+```
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+```
