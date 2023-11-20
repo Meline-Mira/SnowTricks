@@ -26,25 +26,27 @@ class ForgottenPasswordController extends AbstractController
             $user = $userRepository->findOneByUsername($data->getUsername());
 
             if (!$user) {
-                $error = "Cet utilisateur n'existe pas !";
-            } else {
-                $token = sha1(random_bytes(100));
-                $user->setToken($token);
-
-                $entityManager->flush();
-
-                $mailer->sendMail($user, $token);
-
-                $this->addFlash(
-                    'notice',
-                    'Un mail vous a été envoyé pour réinitialiser votre mot de passe.'
-                );
+                return $this->render('user/forgotten_password.html.twig', [
+                    'form' => $form,
+                    'error' => "Cet utilisateur n'existe pas !",
+                ]);
             }
+
+            $token = sha1(random_bytes(100));
+            $user->setToken($token);
+
+            $entityManager->flush();
+
+            $mailer->sendMail($user, $token);
+
+            $this->addFlash(
+                'notice',
+                'Un mail vous a été envoyé pour réinitialiser votre mot de passe.'
+            );
         }
 
         return $this->render('user/forgotten_password.html.twig', [
             'form' => $form,
-            'error' => $error ?? null,
         ]);
     }
 }

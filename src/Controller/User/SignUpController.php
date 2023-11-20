@@ -32,7 +32,7 @@ class SignUpController extends AbstractController
             $user->setUsername($createAccount->getUsername());
             if ($createAccount->getPictureUrl()) {
                 $user->setPicture($createAccount->getPictureUrl());
-            } elseif ($createAccount->getPictureFile()) {
+            } else if ($createAccount->getPictureFile()) {
                 $pictureFile = $createAccount->getPictureFile();
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);

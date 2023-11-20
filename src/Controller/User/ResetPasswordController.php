@@ -25,24 +25,22 @@ class ResetPasswordController extends AbstractController
 
         if ($user === null) {
             return $this->render('errors/token.html.twig');
-        } else {
-            if ($form->isSubmitted() && $form->isValid()) {
-                /** @var User $data */
-                $data = $form->getData();
+        }
 
-                if ($user !== null) {
-                    $user->setPassword($passwordHasher->hashPassword($user, $data->getPassword()));
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $data */
+            $data = $form->getData();
 
-                    $entityManager->flush();
+            $user->setPassword($passwordHasher->hashPassword($user, $data->getPassword()));
 
-                    $this->addFlash(
-                        'notice',
-                        'Votre mot de passe a bien été modifié.'
-                    );
+            $entityManager->flush();
 
-                    return $this->redirectToRoute('tricks_list');
-                }
-            }
+            $this->addFlash(
+                'notice',
+                'Votre mot de passe a bien été modifié.'
+            );
+
+            return $this->redirectToRoute('tricks_list');
         }
 
         return $this->render('user/reset_password.html.twig', [

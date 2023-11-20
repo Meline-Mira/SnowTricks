@@ -21,8 +21,8 @@ class UserValidationController extends AbstractController
             $entityManager->flush();
 
             return $this->render('user/user_validation.html.twig');
-        } else {
-            return $this->render('errors/mail_or_token.html.twig');
         }
+
+        return $this->render('errors/mail_or_token.html.twig');
     }
 }
