@@ -11,7 +11,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-       $this->addReference('switch-rodeo-cinq-tail-grab', TrickFactory::createOne([
+        $this->addReference('switch-rodeo-cinq-tail-grab', TrickFactory::createOne([
             'name' => 'Switch rodeo cinq tail grab',
             'slug' => 'switch-rodeo-cinq-tail-grab',
             'description' => "Le switch rodeo cinq tail grab est un saut dans lequel le rider part de son côté non 
