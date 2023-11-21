@@ -132,8 +132,8 @@
                     for (const message of response.messages) {
                         let image = `<img src="https://api.dicebear.com/7.x/initials/svg?seed=${message.user.username}&radius=50&size=64" alt="avatar avec l'initiale de l'auteur">`;
 
-                        if (message.picture != null) {
-                            image = `<img src="${message.picture}" alt="photo de l'auteur du message">`;
+                        if (message.user.picture != null) {
+                            image = `<img src="${message.user.picture}" style="height: 64px; width: 64px; border-radius: 100%" alt="photo de l'auteur du message">`;
                         }
 
                         let creationDate = new Date(message.creationDate.date);
