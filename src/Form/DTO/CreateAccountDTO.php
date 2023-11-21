@@ -20,7 +20,7 @@ class CreateAccountDTO
     private ?string $username = null;
     private ?string $pictureUrl = null;
 
-    #[File(maxSize: '100k', mimeTypes: ['application/jpg', 'application/png'], mimeTypesMessage: 'S\'il vous plait, téléchargez une image dans un format valide.')]
+    #[File(maxSize: '100k', mimeTypes: ['image/jpg', 'image/png'], mimeTypesMessage: 'S\'il vous plait, téléchargez une image dans un format valide.')]
     private ?UploadedFile $pictureFile = null;
 
     public function getEmail(): ?string

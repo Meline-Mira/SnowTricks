@@ -84,8 +84,8 @@
         <div id="messages-list" class="m-6">
             {% for message in messages %}
                 <div class="flex justify-center my-2">
-                    {% if message.picture is defined %}
-                        <img src="{{ message.picture }}" alt="photo de l'auteur du message">
+                    {% if message.user.picture %}
+                        <img src="{{ message.user.picture }}" style="height: 64px; width: 64px; border-radius: 100%" alt="photo de l'auteur du message">
                     {% else %}
                         <img src="https://api.dicebear.com/7.x/initials/svg?seed={{ message.user.username }}&radius=50&size=64" alt="avatar avec l'initiale de l'auteur">
                     {% endif %}

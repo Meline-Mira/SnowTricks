@@ -47,7 +47,7 @@ class SignUpController extends AbstractController
                     $e = "L'enregistrement de l'image a échouée.";
                 }
 
-                $user->setPicture($newFilename);
+                $user->setPicture('/uploads/user_pictures/'.$newFilename);
             }
 
             $token = sha1(random_bytes(100));
