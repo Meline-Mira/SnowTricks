@@ -47,6 +47,7 @@ class ForgottenPasswordController extends AbstractController
 
         return $this->render('user/forgotten_password.html.twig', [
             'form' => $form,
+            'error' => null,
         ]);
     }
 }
