@@ -3,6 +3,7 @@
 namespace App\Controller\Trick;
 
 use App\Entity\Message;
+use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\CreateMessageType;
 use App\Repository\MessageRepository;
@@ -18,10 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickShowController extends AbstractController
 {
     #[Route('/trick/{slug}', name: 'trick_show')]
-    public function trick(TrickRepository $trickRepository, string $slug, MessageRepository $messageRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function trick(Trick $trick, MessageRepository $messageRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $trick = $trickRepository->findOneTrick($slug);
-
         $form = $this->createForm(CreateMessageType::class);
 
         $form->handleRequest($request);
@@ -40,7 +39,7 @@ class TrickShowController extends AbstractController
             $entityManager->persist($messageLeaved);
             $entityManager->flush();
 
-            return $this->redirectToRoute('trick_show', ['slug' => $slug, '_fragment' => 'leave-message']);
+            return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug(), '_fragment' => 'leave-message']);
         }
 
         $messages = $messageRepository->findMessagesByTrick($trick->getId());
@@ -55,36 +54,14 @@ class TrickShowController extends AbstractController
     }
 
     #[Route('/trick/{slug}/{offset}', name: 'messages_offset')]
-    public function tricksOffset(TrickRepository $trickRepository, string $slug, MessageRepository $messageRepository, $offset, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function tricksOffset(Trick $trick, MessageRepository $messageRepository, $offset): JsonResponse
     {
-        $trick = $trickRepository->findOneTrick($slug);
-
-        $form = $this->createForm(CreateMessageType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            $today = new DateTimeImmutable();
-
-            $createMessage = $form->getData();
-
-            $messageLeaved = new Message();
-            $messageLeaved->setContent($createMessage->getContent());
-            $messageLeaved->setCreationDate($today);
-            $messageLeaved->setUser($user);
-
-            $entityManager->persist($messageLeaved);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('trick_show');
-        }
-
         $messages = $messageRepository->findMessagesByTrick($trick->getId(), $offset);
+
         return new JsonResponse([
             'hasMoreMessages' => $offset + 10 <= $messageRepository->numberOfMessages($trick->getId()),
             'trick' => $trick,
             'messages' => $messages,
-            'form' => $form,
         ]);
     }
 }

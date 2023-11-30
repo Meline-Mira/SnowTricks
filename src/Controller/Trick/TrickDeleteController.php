@@ -15,6 +15,7 @@ class TrickDeleteController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $trick->setChosenImage(null);
+        $entityManager->flush();
         $entityManager->remove($trick);
         $entityManager->flush();
 

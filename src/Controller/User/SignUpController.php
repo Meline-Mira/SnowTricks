@@ -20,52 +20,23 @@ class SignUpController extends AbstractController
     public function signUp(Request $request, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger, EntityManagerInterface $entityManager, RegisterUserMailer $mailer): Response
     {
         $form = $this->createForm(CreateAccountType::class);
-
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var CreateAccountDTO $createAccount */
             $createAccount = $form->getData();
 
             $user = new User();
             $user->setEmail($createAccount->getEmail());
-            $user->setPassword($createAccount->getPassword());
+            $user->setPassword($passwordHasher->hashPassword($user, $form->getData()->getPassword()));
             $user->setUsername($createAccount->getUsername());
-            if ($createAccount->getPictureUrl()) {
-                $user->setPicture($createAccount->getPictureUrl());
-            } else if ($createAccount->getPictureFile()) {
-                $pictureFile = $createAccount->getPictureFile();
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
-
-                try {
-                    $pictureFile->move(
-                        $this->getParameter('user_pictures_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $e = "L'enregistrement de l'image a échouée.";
-                }
-
-                $user->setPicture('/uploads/user_pictures/'.$newFilename);
-            }
-
-            $token = sha1(random_bytes(100));
-
-            $user->setToken($token);
-
-            $plaintextPassword = $form->getData()->getPassword();
-
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $plaintextPassword
-            );
-            $user->setPassword($hashedPassword);
+            $user->setToken(sha1(random_bytes(100)));
+            $this->generatePictureUrl($createAccount, $user, $slugger);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $mailer->sendMail($createAccount, $token);
+            $mailer->sendMail($createAccount, $user->getToken());
 
             return $this->redirectToRoute('tricks_list');
         }
@@ -73,5 +44,20 @@ class SignUpController extends AbstractController
         return $this->render('user/sign_up.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    private function generatePictureUrl(CreateAccountDTO $createAccount, User $user, SluggerInterface $slugger): void
+    {
+        if ($createAccount->getPictureUrl()) {
+            $user->setPicture($createAccount->getPictureUrl());
+        } else if ($createAccount->getPictureFile()) {
+            $pictureFile = $createAccount->getPictureFile();
+            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+            $pictureFile->move($this->getParameter('user_pictures_directory'), $newFilename);
+
+            $user->setPicture('/uploads/user_pictures/' . $newFilename);
+        }
     }
 }
